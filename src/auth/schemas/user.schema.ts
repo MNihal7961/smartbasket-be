@@ -22,6 +22,9 @@ export class User {
 
   @Prop({ required: true })
   lastName: string;
+
+  @Prop({ required: true, enum: ['user', 'admin'], default: 'user' })
+  role: 'user' | 'admin';
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
