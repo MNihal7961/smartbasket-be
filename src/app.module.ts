@@ -30,7 +30,7 @@ export class AppModule implements OnModuleInit {
 
   onModuleInit() {
     this.connection.once('open', () => {
-      console.log('_____________ MongoDB connected successfully _____________');
+      console.log('MongoDB connected');
     });
   }
 }
