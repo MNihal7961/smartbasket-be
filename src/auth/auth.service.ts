@@ -14,56 +14,48 @@ export class AuthService {
   ) {}
 
   async register(data: CreateUserDto): Promise<Omit<User, 'password'>> {
-    const existing = await this.userModel.findOne({
-      $or: [{ username: data.username }, { email: data.email }],
-    });
-
+    const existing = await this.userModel.findOne({ email: data.email });
     if (existing) {
-      throw new Error('Username or Email already exists');
+      throw new Error('Email already exists');
     }
-
     const hashedPassword = await bcrypt.hash(data.password, 10);
-
     const newUser = new this.userModel({
       ...data,
       password: hashedPassword,
     });
-
     const savedUser = await newUser.save();
     const { password, ...userWithoutPassword } = savedUser.toObject();
     return userWithoutPassword;
   }
 
   /**
-   * Validate a user by username and password
+   * Validate a user by email and password
    */
-  async validateUser(
-    username: string,
+  async validateUserByEmail(
+    email: string,
     password: string,
   ): Promise<Omit<User, 'password'> | null> {
-    const user = await this.userModel.findOne({ username });
+    const user = await this.userModel.findOne({ email });
     if (!user) return null;
-
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) return null;
-
     const { password: pw, ...result } = user.toObject();
     return result;
   }
 
   /**
    * Login: generate token and store it
-   */ async login(user: any): Promise<{ access_token: string }> {
+   */
+  async login(user: any): Promise<{ access_token: string }> {
     const payload = {
-      username: user.username,
-      sub: user._id,
+      userId: user._id,
       email: user.email,
+      role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
     };
-
     const token = this.jwtService.sign(payload);
-
     await this.userModel.updateOne({ _id: user._id }, { token });
-
     return {
       access_token: token,
     };
