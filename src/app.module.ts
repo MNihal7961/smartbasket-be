@@ -9,12 +9,28 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { OnModuleInit } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
+import { ProductModule } from './product/product.module';
+import { CategoryModule } from './category/category.module';
+import { CartModule } from './cart/cart.module';
+import { WhishlistModule } from './whishlist/whishlist.module';
+import { OrderModule } from './order/order.module';
+import { AddressModule } from './address/address.module';
+import { CmsModule } from './cms/cms.module';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,
+    ProductModule,
+    CategoryModule,
+    CartModule,
+    WhishlistModule,
+    OrderModule,
+    AddressModule,
+    CmsModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [
