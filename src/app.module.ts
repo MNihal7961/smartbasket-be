@@ -17,6 +17,8 @@ import { OrderModule } from './order/order.module';
 import { AddressModule } from './address/address.module';
 import { CmsModule } from './cms/cms.module';
 import { WalletModule } from './wallet/wallet.module';
+import { BrandModule } from './brand/brand.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { WalletModule } from './wallet/wallet.module';
     AddressModule,
     CmsModule,
     WalletModule,
+    BrandModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [
